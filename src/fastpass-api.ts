@@ -7,6 +7,7 @@ export const sendOTP = async (env: any, email: string): Promise<string> => {
       email,
       gateway_key: env.FASTPASS_GATEWAY_KEY,
     });
+    console.log('the resultJson -> ',result)
     return result.data.id;
   } catch (error) {
     console.error('Error al enviar OTP:', error);

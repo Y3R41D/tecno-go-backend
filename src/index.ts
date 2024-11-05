@@ -28,7 +28,7 @@ app.get('/user', (c) => {
 
 app.post('/send-otp', async (c) => {
   const { email } = await c.req.json()
-  
+    console.log('email received', email)
   try {
     const otpId = await sendOTP({FASTPASS_GATEWAY_KEY: c.env.FASTPASS_GATEWAY_KEY, FASTPASS_MERCHANT_KEY: c.env.FASTPASS_MERCHANT_KEY}, email)
     return c.json({ success: true, otpId })
