@@ -28,7 +28,10 @@ app.get('/user', (c) => {
 
 app.post('/send-otp', async (c) => {
   const { email } = await c.req.json()
-    console.log('email received', email)
+  console.log('email received', email)
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  return c.json({ success: false }, {status: 500});
+  // return c.json({ success: true, otpId:'123-test-123' })
   try {
     const otpId = await sendOTP({FASTPASS_GATEWAY_KEY: c.env.FASTPASS_GATEWAY_KEY, FASTPASS_MERCHANT_KEY: c.env.FASTPASS_MERCHANT_KEY}, email)
     return c.json({ success: true, otpId })
