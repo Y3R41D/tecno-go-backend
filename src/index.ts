@@ -1,5 +1,6 @@
 
 import { Hono } from 'hono'
+import { authMiddleware } from './authMiddleware'
 import { sendOTP, verifyOTP } from './fastpass-api'
 
 type Bindings = {
@@ -9,8 +10,7 @@ type Bindings = {
 
 const app = new Hono<{Bindings:Bindings}>()
 
-app.get('/user', (c) => {
-  const JWT = c.req.header('Authorization')
+app.get('/user', authMiddleware , (c) => {
 
   return c.json({
     firstNames: "FirstNames",
@@ -22,7 +22,6 @@ app.get('/user', (c) => {
     birthDate: "00/00/2000",
     dni: "10000000",
     urlImage: null,
-    testToken: JWT?.replace("Bearer ", "")
   })
 })
 
@@ -30,8 +29,8 @@ app.post('/send-otp', async (c) => {
   const { email } = await c.req.json()
   console.log('email received', email)
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  return c.json({ success: false }, {status: 500});
-  // return c.json({ success: true, otpId:'123-test-123' })
+  // return c.json({ success: false }, {status: 500});
+  return c.json({ success: true, otpId:'123-test-123' })
   try {
     const otpId = await sendOTP({FASTPASS_GATEWAY_KEY: c.env.FASTPASS_GATEWAY_KEY, FASTPASS_MERCHANT_KEY: c.env.FASTPASS_MERCHANT_KEY}, email)
     return c.json({ success: true, otpId })
@@ -43,7 +42,14 @@ app.post('/send-otp', async (c) => {
 
 app.post('/verify-otp', async (c) => {
   const { otpId, otp } = await c.req.json()
-  
+  console.log('json received', {otpId, otp})
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  if (otp === '123123'){
+    c.header('Authorization', `Bearer test-999-test`)
+    return c.json({ success: true,isValid: true, otpId:'otpId-test-123' })
+  }else{
+    return c.json({ success: false });
+  }
   try {
     const isValid = await verifyOTP(c.env.FASTPASS_MERCHANT_KEY, otpId, otp)
     return c.json({ success: true, isValid: isValid })
