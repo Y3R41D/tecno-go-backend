@@ -17,6 +17,10 @@ compatibility_date = "2024-11-02"
 # binding = "DB"
 # database_name = "my-database"
 # database_id = ""
+[[d1_databases]]
+binding = "DB"
+database_name = "DB_TECNO_GO"
+database_id = "eef669ac-0330-4355-b020-997e3bd63548"
 
 # [ai]
 # binding = "AI"
