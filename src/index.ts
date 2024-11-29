@@ -11,7 +11,7 @@ import { efsrtRoutes } from './routes/efsrt'
 const app = new Hono<{ Bindings: Bindings }>()
 
 app.route('/user', userRoutes)
-app.route('/user/procedures', proceduresRoutes)
+app.route('/user/procedure', proceduresRoutes)
 app.route('/user/efsrt', efsrtRoutes)
 
 app.get('/', async (c) => {
