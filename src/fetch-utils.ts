@@ -15,8 +15,8 @@ export const fetchWithAuth = async (MERCHANT_KEY: string, endpoint: string, meth
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    return await response.json();
+    const res = await response.json()
+    return res;
   } catch (error) {
     console.error('Error en la solicitud:', error);
     throw error;
