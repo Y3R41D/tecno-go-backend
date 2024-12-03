@@ -18,7 +18,7 @@ export const sendOTP = async (env: any, email: string): Promise<string> => {
 export const verifyOTP = async (MERCHANT_KEY: string, otpId: string, otp: string): Promise<boolean> => {
   try {
     const result = await fetchWithAuth(MERCHANT_KEY, '/otp/verify', 'POST', {
-      otpId,
+      otp_id:otpId,
       otp,
     });
     return result.status;
