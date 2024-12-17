@@ -10,7 +10,16 @@ userRoutes.get('/', authMiddleware, async (c: AuthContext) => {
     const { sub } = c.get('payload')
     const results = await c.env.DB.prepare(`
         SELECT
-            users.*,
+            users.uuid,
+            users.first_names,
+            users.last_names,
+            users.email,
+            users.phone_number,
+            users.semester,
+            users.birth_date,
+            users.dni,
+            users.url_image,
+            users.blurhash,
             professional_careers.name AS professional_career
         FROM 
             users
