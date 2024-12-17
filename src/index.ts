@@ -30,10 +30,10 @@ app.post('/send-otp', async (c) => {
   const results = await c.env.DB.prepare(
     "SELECT email FROM users WHERE email = ?"
   ).bind(email).first();
-  if (!results){
-    return c.json({ success: false, message: "Estudiante no dado de alta"});
+  if (!results) {
+    return c.json({ success: false, message: "Estudiante no dado de alta" });
   }
-  // return c.json({ success: true, otpId: '123-test-123' })
+  return c.json({ success: true, otpId: '123-test-123' })
   try {
     const otpId = await sendOTP({ FASTPASS_GATEWAY_KEY: c.env.FASTPASS_GATEWAY_KEY, FASTPASS_MERCHANT_KEY: c.env.FASTPASS_MERCHANT_KEY }, email)
     return c.json({ success: true, otpId })
@@ -71,7 +71,7 @@ app.post('/verify-otp', async (c) => {
       if (isValid) {
         c.header('Authorization', `Bearer ${token}`)
         return c.json({ success: true, isValid: isValid })
-      }else {
+      } else {
         return c.json({ success: false, message: "Codigo Invalido" })
       }
 
