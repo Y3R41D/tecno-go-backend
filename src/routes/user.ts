@@ -6,9 +6,20 @@ import { AuthContext } from '../types'
 export const userRoutes = new Hono()
 
 userRoutes.get('/', authMiddleware, async (c: AuthContext) => {
-    const { sub } = c.get('payload');
-    const results = await c.env.DB.prepare(
-        "SELECT * FROM users WHERE uuid = ?"
+
+    const { sub } = c.get('payload')
+    const results = await c.env.DB.prepare(`
+        SELECT
+            users.*,
+            professional_careers.name AS professional_career
+        FROM 
+            users
+        JOIN 
+            professional_careers
+        ON 
+            professional_careers.id = users.professional_career
+        WHERE
+            uuid = ?`
     ).bind(sub).first();
 
     return c.json(transformKeysToCamelCase(results))
