@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241022.0",
+    "sql-formatter": "^15.4.6",
     "wrangler": "^3.96.0"
   }
 }

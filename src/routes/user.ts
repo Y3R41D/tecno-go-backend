@@ -39,9 +39,28 @@ userRoutes.patch('/', authMiddleware, async (c: AuthContext) => {
     const updates = await c.req.json()
     const { sub } = c.get('payload')
     console.log(transformKeysToSnakeCase(updates), sub)
-    const user = await c.env.DB.prepare(
-        `SELECT * FROM users WHERE uuid = ?`
-    ).bind(sub).first()
+    const user = await c.env.DB.prepare(`
+        SELECT
+            users.uuid,
+            users.first_names,
+            users.last_names,
+            users.email,
+            users.phone_number,
+            users.semester,
+            users.birth_date,
+            users.dni,
+            users.url_image,
+            users.blurhash,
+            professional_careers.name AS professional_career
+        FROM 
+            users
+        JOIN 
+            professional_careers
+        ON 
+            professional_careers.id = users.professional_career
+        WHERE
+            uuid = ?
+        `).bind(sub).first()
 
     const updateData = transformKeysToSnakeCase(updates)
 
